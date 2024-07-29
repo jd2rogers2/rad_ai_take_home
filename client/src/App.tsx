@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SearchForm from './SearchForm';
 import SearchResults from './SearchResults';
 
@@ -9,21 +9,14 @@ import './App.css'
 
 const VITE_FASTAPI_SERVICE_URL = import.meta.env.VITE_FASTAPI_SERVICE_URL;
 
-function getParamsFromFormData({
-  status,
-  applicant,
-  street,
-  lat,
-  long,
-}: FormData): string {
-  let params = "";
-  if (status) { params += `status=${status}?`; }
-  if (applicant) { params += `applicant=${applicant}?`; }
-  if (street) { params += `street=${street}?`; }
-  if (lat) { params += `lat=${lat}?`; }
-  if (long) { params += `long=${long}?`; }
-  params = params.slice(0, params.length-1);
-  return params;
+function getParamsFromFormData(formData: FormData): string {
+  const stringifiedKeys = Object.entries(formData)
+    .reduce((agg: { [index: string]: string }, curr) => {
+      agg[curr[0]] = String(curr[1]);
+      return agg;
+    }, {});
+  const searchParams = new URLSearchParams(stringifiedKeys);
+  return searchParams.toString();
 }
 
 
@@ -33,7 +26,7 @@ function App() {
 
   async function getFoodTrucks(): Promise<FoodTruck[]> {
     const params = getParamsFromFormData(formData);
-    const res = await fetch(`${VITE_FASTAPI_SERVICE_URL}?${params}`);
+    const res = await fetch(`${VITE_FASTAPI_SERVICE_URL}/search?${params}`);
     if (res.ok) {
       return await res.json();
     } else {
@@ -42,10 +35,18 @@ function App() {
     }
   }
 
-  async function handleSubmit() {
+  async function handleSubmit(e: SubmitEvent) {
+    e.preventDefault();
     const newTrucks = await getFoodTrucks();
     setFoodTrucks(newTrucks);
   }
+
+  useEffect(() => {
+    (async function() {
+      const newTrucks = await getFoodTrucks();
+      setFoodTrucks(newTrucks);
+    }());
+  }, []);
 
   return (
     <>

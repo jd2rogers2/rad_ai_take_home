@@ -16,39 +16,47 @@ function SearchForm({
 }) {
 
   function handleInputChange(e: FormEvent<HTMLInputElement | HTMLSelectElement>): void {
-    setFormData({ [e.currentTarget.name]: e.currentTarget.value });
+    setFormData({ ...formData, [e.currentTarget.name]: e.currentTarget.value });
   }
 
   return (
     <form onSubmit={onSubmit}>
       <select name="status" onChange={handleInputChange} value={formData.status || ''}>
         {statuses.map(s => (
-          <option value={s}>{s}</option>
+          <option key={s} value={s}>{s}</option>
         ))}
       </select>
       <input
+        placeholder="applicant"
         type="text"
         name="applicant"
         value={formData.applicant || ''}
         onChange={handleInputChange}
       />
       <input
+        placeholder="street"
         type="text"
         name="street"
         value={formData.street || ''}
         onChange={handleInputChange}
       />
       <input
-        type="number"
+        placeholder="lat"
+        type="text"
         name="lat"
         value={formData.lat || ''}
         onChange={handleInputChange}
       />
       <input
-        type="number"
+        placeholder="long"
+        type="text"
         name="long"
         value={formData.long || ''}
         onChange={handleInputChange}
+      />
+      <input
+        type="submit"
+        value="Submit"
       />
     </form>
   )
