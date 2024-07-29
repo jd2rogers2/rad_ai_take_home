@@ -40,6 +40,13 @@ docker compose build
 docker compose up
 ```
 
+troubleshooting:
+- there is an error with vite in docker right now
+- switch `CMD` comments in client/Dockerfile.dev
+- from within the FE docker container `npm install`
+- then `build` and `up`
+
+
 navigate to:
 
 - BE at http://localhost:8000/docs
