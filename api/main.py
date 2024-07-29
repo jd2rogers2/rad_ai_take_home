@@ -62,7 +62,12 @@ class FoodTruckPermit(BaseModel):
     # ":@computed_region_bh8s_q3mv": "58",
     # ":@computed_region_fyvs_ahh9": "1"
 
-def filter_food_trucks(trucks, status, applicant, street):
+def filter_food_trucks(
+  trucks,
+  status: str,
+  applicant: str,
+  street: str,
+) -> list[FoodTruckPermit]:
     results = []
     for t in trucks:
         if (t['status'] == status
@@ -72,7 +77,11 @@ def filter_food_trucks(trucks, status, applicant, street):
             results.append(t)
     return results
 
-def location_filter_food_trucks(trucks, lat, long):
+def location_filter_food_trucks(
+  trucks,
+  lat: float,
+  long: float,
+) -> list[FoodTruckPermit]:
     trucks_w_lat_long = [t for t in trucks if t['latitude'] and t['longitude']]
     destinations = [(t['latitude'], t['longitude']) for t in trucks_w_lat_long]
     g_resps = []

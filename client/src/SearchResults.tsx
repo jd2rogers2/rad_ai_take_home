@@ -26,7 +26,7 @@ function SearchForm({ foodTrucks }: { foodTrucks: FoodTruck[] }) {
             <td>{ft.locationdescription}</td>
             <td>{ft.latitude}</td>
             <td>{ft.longitude}</td>
-            <td>{ft.distance_from_input || 'N/A'}</td>
+            <td>{typeof(ft.distance_from_input) === "number" ? ft.distance_from_input : 'N/A'}</td>
             <td><a href={ft.schedule}>see schedule</a></td>
           </tr>
         ))}
