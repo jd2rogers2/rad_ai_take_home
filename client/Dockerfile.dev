@@ -9,5 +9,7 @@ RUN npm ci
 
 COPY . /app
 
+ARG VITE_FASTAPI_SERVICE_URL
+
 CMD npm run dev
 # CMD tail -f /dev/null
